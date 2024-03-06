@@ -1,0 +1,122 @@
+' This is an exccel VBA invesntory software
+Option Explicit
+
+
+Private Sub CommandButton1_Click()
+If Me.ListBox1.ListIndex < 0 Then
+    MsgBox "Please select a product"
+    Exit Sub
+End If
+
+
+Me.TextBox2.Value = Me.ListBox1.Value
+
+End Sub
+
+Private Sub CommandButton2_Click()
+
+    If Me.TextBox2.Value = "" Then
+       MsgBox "Please add a product into product box!!!"
+       Exit Sub
+    End If
+    
+    If Me.Section_ComboBox.Value = "Click Here To Point Of Use" Then
+        MsgBox "Please select Point of use!!!"
+        Exit Sub
+    End If
+
+    
+    If Me.UnitComboBox1.Value = "Unit" Then
+        MsgBox "Please select appropriate units!!"
+        Exit Sub
+    End If
+
+    If IsNumeric(Me.TextBox3.Value) = False Then
+       MsgBox "Invalid Qty"
+       Exit Sub
+    End If
+    
+Dim sh As Worksheet
+Set sh = ThisWorkbook.Sheets("Stock In-Out")
+
+Dim lr As Long
+lr = Application.WorksheetFunction.CountA(sh.Range("A:A"))
+
+sh.Range("A" & lr + 1).Value = Me.TextBox2.Value
+
+
+If Me.OptionButton1.Value = True Then
+    sh.Range("B" & lr + 1).Value = "IN"
+Else
+    sh.Range("B" & lr + 1).Value = "OUT"
+End If
+
+sh.Range("C" & lr + 1).Value = Me.TextBox4.Value
+sh.Range("D" & lr + 1).Value = Me.TextBox3.Value
+sh.Range("E" & lr + 1).Value = Me.UnitComboBox1.Value
+
+sh.Range("F" & lr + 1).Value = Me.Section_ComboBox.Value
+
+sh.Range("G2:J" & lr + 1).FillDown
+
+
+MsgBox "Updated Successfully!!!"
+
+Me.TextBox1.Value = ""
+Me.TextBox2.Value = ""
+Me.TextBox3.Value = ""
+Me.Section_ComboBox.Value = "Click Here To Point Of Use"
+Me.UnitComboBox1.Value = "Unit"
+
+End Sub
+
+
+
+Private Sub Image2_Click()
+    Call Calendar.SelectedDate(Me.TextBox4)
+End Sub
+Private Sub ListBox1_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    Me.TextBox2.Value = Me.ListBox1.Value
+End Sub
+
+
+
+
+
+Private Sub TextBox1_Change()
+Call Show_Product
+End Sub
+
+
+
+Private Sub UserForm_Activate()
+
+If Me.TextBox4.Value = "" Then
+    Me.TextBox4.Value = Format(Date, "DD-MMM-YYYY")
+    Call Show_Product
+End If
+
+End Sub
+
+Sub Show_Product()
+
+Dim sh As Worksheet
+Set sh = ThisWorkbook.Sheets("Product Master")
+
+Dim i As Integer
+
+Me.ListBox1.Clear
+
+For i = 2 To Application.WorksheetFunction.CountA(sh.Range("A:A"))
+    If Me.TextBox1.Value = "" Then
+        Me.ListBox1.AddItem sh.Range("A" & i).Value
+    Else
+        If VBA.InStr(UCase(sh.Range("A" & i).Value), UCase(Me.TextBox1.Value)) > 0 Then
+        Me.ListBox1.AddItem sh.Range("A" & i).Value
+        End If
+    End If
+Next i
+
+End Sub
+
+
