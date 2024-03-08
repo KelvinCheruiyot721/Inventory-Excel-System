@@ -1,8 +1,9 @@
 ' This is an exccel VBA invesntory software
+'Yopu need upto 6 sheets to run it well
 Option Explicit
 
 
-Private Sub CommandButton1_Click()
+Private Sub CommandButton1_Click ()
 If Me.ListBox1.ListIndex < 0 Then
     MsgBox "Please select a product"
     Exit Sub
@@ -14,7 +15,7 @@ Me.TextBox2.Value = Me.ListBox1.Value
 End Sub
 
 Private Sub CommandButton2_Click()
-
+'érror handling messgaes 
     If Me.TextBox2.Value = "" Then
        MsgBox "Please add a product into product box!!!"
        Exit Sub
@@ -35,6 +36,7 @@ Private Sub CommandButton2_Click()
        MsgBox "Invalid Qty"
        Exit Sub
     End If
+'inputs to the sheet database
     
 Dim sh As Worksheet
 Set sh = ThisWorkbook.Sheets("Stock In-Out")
@@ -61,7 +63,7 @@ sh.Range("G2:J" & lr + 1).FillDown
 
 
 MsgBox "Updated Successfully!!!"
-
+'cleaing the data in the input fields
 Me.TextBox1.Value = ""
 Me.TextBox2.Value = ""
 Me.TextBox3.Value = ""
@@ -71,7 +73,7 @@ Me.UnitComboBox1.Value = "Unit"
 End Sub
 
 
-
+'calendar functions
 Private Sub Image2_Click()
     Call Calendar.SelectedDate(Me.TextBox4)
 End Sub
