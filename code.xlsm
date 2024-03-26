@@ -61,7 +61,7 @@ sh.Range("F" & lr + 1).Value = Me.Section_ComboBox.Value
 
 sh.Range("G2:J" & lr + 1).FillDown
 
-
+'if all criteria is meet the data is exported to the excel data sheet for storage
 MsgBox "Updated Successfully!!!"
 'cleaing the data in the input fields
 Me.TextBox1.Value = ""
